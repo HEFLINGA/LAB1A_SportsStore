@@ -22,9 +22,11 @@ namespace SportsStore.WebUI.DependencyResolution {
     using System.Web;
 
     using Microsoft.Practices.ServiceLocation;
-
+    using Moq;
     using StructureMap;
-	
+    using SportsStore.Domain.Abstract;
+    using SportsStore.Domain.Entities;
+
     /// <summary>
     /// The structure map dependency scope.
     /// </summary>
@@ -42,9 +44,22 @@ namespace SportsStore.WebUI.DependencyResolution {
                 throw new ArgumentNullException("container");
             }
             Container = container;
+            AddBindings(container);
         }
 
         #endregion
+
+        private void AddBindings(IContainer container)
+        {
+            Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
+            mock.Setup(m => m.Products).Returns(new List<Product>
+            {
+                new Product { Name = "Football", Price = 25 },
+                new Product { Name = "Surf board", Price = 179 },
+                new Product { Name = "Running shoes", Price = 95 }
+            });
+            container.Inject<IProductsRepository>(mock.Object);
+        }
 
         #region Public Properties
 
