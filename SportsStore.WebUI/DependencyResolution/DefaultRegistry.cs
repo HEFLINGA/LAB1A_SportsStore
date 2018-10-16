@@ -32,7 +32,7 @@ namespace SportsStore.WebUI.DependencyResolution {
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
                 });
-            For<IProductsRepository>().Use<EFProductRepository>();
+            For<IProductRepository>().Use<EFProductRepository>();
             //For<IExample>().Use<Example>();
         }
 

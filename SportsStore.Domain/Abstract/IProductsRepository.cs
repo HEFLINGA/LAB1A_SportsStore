@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SportsStore.Domain.Abstract
 {
-    public interface IProductsRepository
+    public interface IProductRepository
     {
         IEnumerable<Product> Products { get; }
     }
