@@ -57,7 +57,66 @@ namespace SportsStore.UnitTests
         [TestMethod]
         public void Can_Remove_Line()
         {
+            // Arrange 
+            Product p1 = new Product { ProductID = 1, Name = "p1" };
+            Product p2 = new Product { ProductID = 2, Name = "p2" };
+            Product p3 = new Product { ProductID = 3, Name = "p3" };
 
+            // Arrange - create the cart
+            Cart target = new Cart();
+            // Arrange - Add some products to the cart
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 3);
+            target.AddItem(p3, 5);
+            target.AddItem(p2, 1);
+
+            // Act
+            target.RemoveLine(p2);
+
+            // Assert
+            Assert.AreEqual(target.Lines.Where(c => c.Product == p2).Count(), 0);
+            Assert.AreEqual(target.Lines.Count(), 2);
+        }
+
+        [TestMethod]
+        public void Calculate_Cart_Total()
+        {
+            // Arrange - create some test products
+            Product p1 = new Product { ProductID = 1, Name = "P1", Price = 100M };
+            Product p2 = new Product { ProductID = 2, Name = "P2", Price = 50M };
+
+            // Arrange - create cart
+            Cart target = new Cart();
+
+            // Act
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+            target.AddItem(p1, 3);
+            decimal result = target.ComputeTotalValue();
+
+            // Assert
+            Assert.AreEqual(result, 450M);
+        }
+
+        [TestMethod]
+        public void Can_Clear_Contents()
+        {
+            // Arrange - create test products
+            Product p1 = new Product { ProductID = 1, Name = "P1", Price = 100M };
+            Product p2 = new Product { ProductID = 2,Name = "P2", Price = 50M };
+
+            // Arrange
+            Cart target = new Cart();
+
+            // Arrange - add some items
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+
+            // Act - reset cart
+            target.Clear();
+
+            // Assert
+            Assert.AreEqual(target.Lines.Count(), 0);
         }
     }
 }
